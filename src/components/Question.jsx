@@ -2,7 +2,7 @@ import Timebar from './Timebar';
 import Answers from './Answers';
 import { useState } from 'react';
 
-const QUESTION_TIMER = 5000;
+const QUESTION_TIMER = 10000;
 const ANSWER_TIMER = 1000;
 const RESULT_TIMER = 2000;
 
@@ -18,7 +18,6 @@ function Question({ currQuestion, onSelectAnswer }) {
 
   function handleSelectAnswer(answer) {
     if (timer < QUESTION_TIMER) return;
-
     setAnswer({ selectedAnswer: answer, isCorrect: null });
     setTimeout(() => {
       setAnswer({
