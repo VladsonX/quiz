@@ -4,7 +4,9 @@ function App() {
   return (
     <>
       <Header></Header>
-      <Quiz></Quiz>
+      <main>
+        <Quiz></Quiz>
+      </main>
     </>
   );
 }

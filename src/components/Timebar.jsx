@@ -1,36 +1,30 @@
+const FREQUENCY = 100;
+
 import { useEffect, useState } from 'react';
 
-function Timebar({ timer, frequency }) {
-  const [progressValue, setProgressValue] = useState(timer);
+function Timebar({ onTimeout, currTimer, mode }) {
+  const [progressValue, setProgressValue] = useState(currTimer);
+
+  useEffect(() => {
+    const timer = setTimeout(onTimeout, currTimer);
+    return () => clearTimeout(timer);
+  }, [onTimeout, currTimer]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setProgressValue(prevValue => {
-        if (prevValue <= frequency) {
+        if (prevValue <= FREQUENCY) {
           clearInterval(interval);
           return 0;
         }
-        return prevValue - frequency;
+        return prevValue - FREQUENCY;
       });
-    }, frequency);
-    return () => clearInterval(interval);
-  }, [frequency]);
+    }, FREQUENCY);
 
-  const percentage = Math.min(Math.max((progressValue / timer) * 100, 0), 100);
-  return (
-    <div
-      role="progressbar"
-      aria-valuenow={progressValue}
-      aria-valuemin={0}
-      aria-valuemax={timer}
-      className="w-2/3 h-3 bg-gray-200 rounded-full overflow-hidden"
-    >
-      <div
-        className="h-full bg-indigo-600 transition-all duration-100 ease-linear rounded-full"
-        style={{ width: `${percentage}%` }}
-      />
-    </div>
-  );
+    return () => clearInterval(interval);
+  }, []);
+
+  return <progress max={currTimer} value={progressValue} className={mode} />;
 }
 
 export default Timebar;
